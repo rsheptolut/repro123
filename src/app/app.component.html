@@ -1,0 +1,27 @@
+<h1>Repro</h1>
+<div style="display: flex; flex-direction: column">
+<p>Select without trackBy:</p>
+<select name="selectWithoutTrackBy" [(ngModel)]="value">
+    <option></option>
+    <option *ngFor="let option of options" [value]="option.value">{{option.title}}</option>
+</select>
+<p>Same select but with trackBy:</p>
+<select name="selectWithTrackBy" [(ngModel)]="value">
+    <option></option>
+    <option *ngFor="let option of options; trackBy: trackItem" [value]="option.value">{{option.title}}</option>
+</select>
+
+<p>Adding items this way works fine always:</p>
+<button (click)="pushOption(false)">Mutate to add new item</button>
+
+<p>Refreshing items as if from a server response breaks ngFor and resets the selected value of the first select after upgrading to v9 IF BrowserAnimationsModule is imported.</p>
+<button (click)="pushOption(true)">Regenerate to add new item</button>
+
+<p>Workarounds:</p>
+<p>1. Use trackBy. If it's the correct solution, this needs to be reflected in the list of breaking changes.</p>
+<p>2. Remove BrowserAnimationsModule from the imports section of app.momdule.ts. Not sure why that's affecting things.</p>
+<p>3. Don't upgrade to Angular v9.</p>
+
+
+<p>Selected: {{value | json}}</p>
+</div>
